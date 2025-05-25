@@ -1,0 +1,28 @@
+name: Delete Workflow Runs
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_status:
+        description: '选择要删除的运行类型'
+        required: true
+        type: choice
+        options:
+          - all
+          - success
+          - failure
+          - cancelled
+        default: failure
+
+jobs:
+  delete-runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: GitRML/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          retain_days: 0
+          keep_minimum_runs: 0
+          delete_workflow_pattern: ""
+          delete_run_status: ${{ github.event.inputs.run_status }}
