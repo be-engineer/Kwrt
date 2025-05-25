@@ -26,4 +26,4 @@ jobs:
         run: |
           gh run list --repo ${{ github.repository }} --limit 100 --json databaseId,conclusion \
             | jq -r '.[] | select(.conclusion=="${{ github.event.inputs.run_status }}") | .databaseId' \
-            | xargs -r -I {} gh run delete --repo ${{ github.repository }} {} -y
+            | xargs -r -I {} gh run delete --repo ${{ github.repository }} {} 
