@@ -333,14 +333,12 @@ jobs:
       uses: kiddin9/debugger-action@master
       if: matrix.ssh_debug == 'true'
 
-    - name: Save .config file
-      if: matrix.save_config == 'true'
-      uses: actions/upload-artifact@main
-      with:
-        name: ${{matrix.target}}.config
-        path: openwrt/.config
+    - name: Save config to device dir after SSH debug
+      if: matrix.save_config == 'true'  
+      run: |
+        cp -f openwrt/.config devices/${{matrix.target}}/.config
 
-    - name: Compile the firmware
+    - name: Compilethe firmware
       id: compile
       run: |
         shopt -s extglob
