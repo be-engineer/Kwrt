@@ -6,7 +6,7 @@
 # Blog: https://p3terx.com
 #=================================================
 
-name: Build openwrt
+name: Build Kwrt
 
 on: 
   repository_dispatch:
@@ -43,6 +43,23 @@ on:
           - bcm27xx_bcm2708
           - bcm27xx_bcm2711
           - rockchip_rk35xx
+      ssh_debug:
+        description: '是否进入SSH调试'
+        required: true
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+        default: 'false'
+      save_config:
+        description: '是否保存.config配置文件'
+        required: true
+        type: choice
+        options:
+          - 'false'
+          - 'true'
+        default: 'true'
+
 
 env:
   REPO_TOKEN: ${{ secrets.TOKEN_KIDDIN9 }}
@@ -58,14 +75,17 @@ env:
 
 jobs:
   build:
+    name: Build ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     
-    name: Build ${{matrix.target}}
+    #name: Build ${{matrix.target}}
     strategy:
       fail-fast: false
       matrix:
         target: [ "${{ github.event.inputs.target || github.event.client_payload.target }}" ]
-        
+        ssh_debug: [ "${{ github.event.inputs.ssh_debug || 'false' }}" ]
+        save_config: [ "${{ github.event.inputs.save_config || 'false' }}" ]
+
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -311,7 +331,14 @@ jobs:
 
     - name: SSH connection to Actions
       uses: kiddin9/debugger-action@master
-      if: contains(github.event.action, 'ssh')
+      if: matrix.ssh_debug == 'true'
+
+    - name: Save .config file
+      if: matrix.save_config == 'true'
+      uses: actions/upload-artifact@main
+      with:
+        name: ${{matrix.target}}.config
+        path: openwrt/.config
 
     - name: Compile the firmware
       id: compile
