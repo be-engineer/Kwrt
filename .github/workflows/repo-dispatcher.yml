@@ -49,6 +49,7 @@ jobs:
         echo "REPO_BRANCH=${REPO_BRANCH}" >> $GITHUB_ENV
 
     - name: Trigger Packages Update
+      if: '!contains(github.event.inputs.param, ''cw'')'
       run: |
         gitdate=$(curl -H "Authorization: token ${{ secrets.TOKEN_KIDDIN9 }}" -s "https://api.github.com/repos/kiddin9/kwrt-packages/actions/runs" | jq -r '.workflow_runs[0].created_at')
         gitdate=$(date -d "$gitdate" +%s)
@@ -61,6 +62,7 @@ jobs:
         fi
 
     - name: Trigger Compile
+      if: "!contains(github.event.inputs.param, 'cw')"
       run: |
         sudo timedatectl set-timezone "$TZ"
           curl \
