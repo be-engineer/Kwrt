@@ -9,12 +9,39 @@
 name: Repo Dispatcher
 
 on: 
-  # push: 
-  #   branches:
-  #     - master
-  #schedule:
-  #  - cron: 30 18 * * *
   workflow_dispatch:
+    inputs:
+      target:
+        description: '选择编译型号'
+        required: true
+        type: choice
+        options:
+          - x86_64
+          - x86_generic
+          - rockchip_armv8
+          - bcm27xx_bcm2712
+          - bcm27xx_bcm2711
+          - bcm27xx_bcm2710
+          - bcm27xx_bcm2709
+          - bcm27xx_bcm2708
+          - armsr_armv8
+          - mediatek_mt7622
+          - mediatek_filogic
+          - qualcommax_ipq50xx
+          - ramips_mt7621
+          - ramips_mt7621_xiaomi_ac2100
+          - ramips_mt76x8
+          - qualcommax_ipq807x
+          - ipq40xx_generic
+          - ipq806x_generic
+          - amlogic_meson8b
+          - qualcommax_ipq60xx
+          - mvebu_cortexa9
+          - bcm53xx
+          - sunxi_cortexa53
+          - sunxi_cortexa7
+          - ath79_nand
+          - xiaomi_ac2100
  
 
 env:
