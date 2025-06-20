@@ -15,54 +15,7 @@ on:
   #schedule:
   #  - cron: 30 18 * * *
   workflow_dispatch:
-    inputs:   
-      target:
-        description: '选择编译型号'
-        required: true
-        type: choice
-        options:
-          - x86_64
-          - x86_generic
-          - armsr_armv8
-          - qualcommax_ipq807x
-          - mediatek_mt7622
-          - mediatek_mt7981
-          - mediatek_filogic
-          - bcm27xx_bcm2710
-          - qualcommax_ipq60xx
-          - bcm4908_generic
-          - sunxi_cortexa53
-          - ramips_mt7621
-          - ramips_mt7620
-          - ramips_mt76x8
-          - ath79_nand
-          - ipq40xx_generic
-          - bcm27xx_bcm2709
-          - sunxi_cortexa7
-          - qualcommax_ipq50xx
-          - amlogic_meson8b
-          - bcm53xx
-          - mvebu_cortexa9
-          - ipq806x_generic
-          - bcm27xx_bcm2708
-          - bcm27xx_bcm2711
-          - rockchip_rk35xx
-      ssh_debug:
-        description: '是否进入SSH调试'
-        required: true
-        type: choice
-        options:
-          - 'false'
-          - 'true'
-        default: 'false'
-      save_config:
-        description: '是否保存.config配置文件'
-        required: true
-        type: choice
-        options:
-          - 'false'
-          - 'true'
-        default: 'true'
+ 
 
 env:
   TOKEN_KIDDIN9: ${{ secrets.TOKEN_KIDDIN9 }}
