@@ -25,13 +25,17 @@ env:
 
 jobs:
   build:
+    name: Build ${{ github.event.inputs.target }}
     runs-on: ubuntu-latest
     
-    name: Build ${{matrix.target}}
+    #name: Build ${{matrix.target}}
     strategy:
       fail-fast: false
       matrix:
-        target: ["${{ github.event.client_payload.target }}"]
+        #target: ["${{ github.event.client_payload.target }}"]
+        target: [ "${{ github.event.inputs.target || github.event.client_payload.target }}" ]
+        ssh_debug: [ "${{ github.event.inputs.ssh_debug || 'false' }}" ]
+        save_config: [ "${{ github.event.inputs.save_config || 'false' }}" ]
         
     steps:
     - name: Checkout
