@@ -263,7 +263,7 @@ jobs:
           }
         export -f git_clone_path
         cp -rf devices/common/. openwrt/
-        cp -rf devices/${{ matrix.target }}. openwrt/
+        cp -rf devices/${{ matrix.target }}/ openwrt/
         cp -rf devices openwrt/
         cd openwrt
         chmod +x devices/common/$DIY_SH
@@ -357,6 +357,8 @@ jobs:
         rm -rf kwrt-!(*imagebuilder*)
         Emoji=("🎉" "🤞" "✨" "🎁" "🎈" "🎄" "🎨" "💋" "🍓" "🍕" "🍉" "💐" "🌴" "🚀" "🛸" "🗽" "⛅" "🌈" "🔥" "⛄" "🐶" "🏅" "🦄" "🐤")
         echo "EMOJI=${Emoji[$[$RANDOM % ${#Emoji[@]}]]}" >> $GITHUB_ENV
+        # 新增：设置 FIRMWARE 变量为当前固件输出目录
+        echo "FIRMWARE=$(pwd)" >> $GITHUB_ENV
 
     - name: Upload firmware for artifact
       uses: actions/upload-artifact@main
