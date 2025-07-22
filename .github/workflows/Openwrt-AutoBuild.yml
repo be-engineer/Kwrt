@@ -8,8 +8,46 @@
 
 name: Build OpenWrt
 
-on: 
-  repository_dispatch:
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: '请选择要编译的设备'
+        required: true
+        type: choice
+        options:
+          - x86_64
+          - x86_generic
+          - armsr_armv8
+          - qualcommax_ipq807x
+          - mediatek_mt7622
+          - mediatek_mt7981
+          - mediatek_filogic
+          - bcm27xx_bcm2710
+          - qualcommax_ipq60xx
+          - bcm4908_generic
+          - sunxi_cortexa53
+          - ramips_mt7621
+          - ramips_mt7620
+          - ramips_mt76x8
+          - ath79_nand
+          - ipq40xx_generic
+          - bcm27xx_bcm2709
+          - sunxi_cortexa7
+          - qualcommax_ipq50xx
+          - amlogic_meson8b
+          - bcm53xx
+          - mvebu_cortexa9
+          - ipq806x_generic
+          - bcm27xx_bcm2708
+          - bcm27xx_bcm2711
+          - rockchip_rk35xx
+          # ...如有新设备请手动添加...
+      ssh_debug:
+        description: '是否启用SSH Debug（true可进入控制台修改配置）'
+        required: false
+        default: 'false'
+        type: boolean
 
 env:
   REPO_TOKEN: ${{ secrets.TOKEN_KIDDIN9 }}
@@ -26,13 +64,13 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    name: Build ${{matrix.target}}
+
+    name: Build ${{ matrix.target }}
     strategy:
       fail-fast: false
       matrix:
-        target: ["${{ github.event.client_payload.target }}"]
-        
+        target: ["${{ github.event.inputs.target }}"]
+
     steps:
     - name: Checkout
       uses: actions/checkout@main
@@ -276,9 +314,9 @@ jobs:
         fi
         df -hT
 
-    - name: SSH connection to Actions
+    - name: SSH Debug (可选)
+      if: github.event.inputs.ssh_debug == 'true'
       uses: kiddin9/debugger-action@master
-      if: contains(github.event.action, 'ssh')
 
     - name: Compile the firmware
       id: compile
