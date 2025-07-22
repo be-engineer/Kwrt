@@ -72,6 +72,9 @@ jobs:
         target: ["${{ github.event.inputs.target }}"]
 
     steps:
+    - name: Show selected device
+      run: echo "::notice title=编译设备::${{ matrix.target }}"
+
     - name: Checkout
       uses: actions/checkout@main
       with:
